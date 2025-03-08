@@ -14,9 +14,9 @@ class GenAIManager:
             logger.error(f"Failed to initialize GenAI Manager: {str(e)}")
             raise
 
-    async def generate_response(self, message: str) -> str:
+    def generate_response_sync(self, message: str) -> str:
         """
-        Generate a response using the Gemini model
+        Generate a response using the Gemini model (synchronous version)
         
         Args:
             message (str): Input message from user
@@ -25,7 +25,7 @@ class GenAIManager:
             str: Generated response
         """
         try:
-            response = await self.model.generate_content_async(message)
+            response = self.model.generate_content(message)
             return response.text
         except Exception as e:
             logger.error(f"Error generating response: {str(e)}")

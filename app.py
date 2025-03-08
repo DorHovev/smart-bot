@@ -11,12 +11,17 @@ def home():
 
 
 @app.route("/get")
-async def get_bot_response():
-    query = request.args.get('msg')
-    genai_manager = GenAIManager()
-    response = await genai_manager.generate_response(query)
-    return response
+def get_bot_response():
+    try:
+        query = request.args.get('msg')
+        genai_manager = GenAIManager()
+        # Use synchronous version instead of async
+        response = genai_manager.generate_response_sync(query)
+        return response
+    except Exception as e:
+        app.logger.error(f"Error in get_bot_response: {str(e)}")
+        return "I apologize, but I encountered an error processing your request."
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=54321)
+    app.run(host="0.0.0.0", port=54321, debug=True)
